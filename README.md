@@ -21,8 +21,80 @@ Activation Functions: Non-linear functions, such as ReLU (Rectified Linear Unit)
 Training Process: The network is trained on a labeled dataset of vehicle images. The training process involves adjusting the model's weights using backpropagation to minimize the loss function, which measures the difference between the predicted and actual labels.
 
 Deployment: The trained model is deployed on an NVIDIA Jetson device. The Jetson's GPU accelerates the inference process, enabling real-time vehicle classification from camera feeds.
+
 ## Running this project
-1. Add steps for running this project.
-2. Make sure to include any required libraries that need to be installed for your project to run.
+
+
+Set up an SSH conection with your Jetson Nano.
+
+Open a new terminal.
+
+Run this command to update your installer: sudo apt-get update
+
+Enter your password to continue.
+
+Run this command to install cmake: sudo apt-get install git cmake
+
+Clone the jetson-inference project: git clone --recursive https://github.com/dusty-nv/jetson-inference
+
+Change into the newly created jetson-inference folder: cd jetson-inference
+
+Update the contents of the folder: git submodule update --init
+
+Install the python processes necessary to run the AI: sudo apt-get install libpython3-dev python3-numpy
+
+Switch to the jetson-inference directory and make a build directory to build your project into: mkdir build
+
+Switch to the build directory: cd build
+
+Build the project with this command: cmake ../
+
+Switch to the build directory if not already in it. Run this command to run make the python files: make
+
+Run this command to install make. sudo make install
+
+Configure the make command: sudo ldconfig.
+
+Download the skin disease dataset at https://www.kaggle.com/datasets/marquis03/vehicle-classification/data
+
+Extract the elements of the zip file and drag the extracted folder into jetson-inference > python > training > classification > data
+
+cd back into jetson-inference.
+
+Run this command to allot more memory for the program: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+
+Run the docker with this command: ./docker/run.sh
+
+Enter your password when prompted.
+
+cd into jetson-inference/python/training/classification.
+
+Transfer the files from the computer to Visual Studio Code in data folder (drag and drop)
+
+Run this code to start training the AI based on the dataset: python3 train.py --model-dir=models/VehicleClassification data/vehicles --epochs=35
+
+To increase or decrease the amount of training the AI model receives, increase or decrease the number in --epochs=35 respectively.
+
+Once the model has finished training, cd into jetson-inference/python/training/classification.
+
+Export the model into onnx: python3 onnx_export.py --model-dir=models/vehicle classification-dataset
+
+Use ctrl+D to exit the docker.
+
+cd into jetson-inference/python/training/classification.
+
+Run these commands to set up variables needed for image processing:
+
+NET=models/VehicleClassification
+DATASET=data/VehicleClassification
+Run this command try an image from the test folder. Change 'NAME HERE' to name your output file, rename 'NAME OF CATEGORY' to the category of what you want to test, rename 'IMAGE NAME' to the name of the image. You can rename the image first in the side menu to customize the name. imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/NAME OF CATEGORY/IMAGE NAME .jpg $DATASET/output/OUTPUT NAME.jpg
+Here is an example of what your command should look like: imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/VehicleClassification/Firetruck1.jpg Firetest1.jpg
+
+The results should automatically go into the classification folder, and double click a picture to view the AI's classification and confidence.
+
+
+
+
+
 
 [View a video explanation here](video link)
