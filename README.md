@@ -85,10 +85,10 @@ cd into jetson-inference/python/training/classification.
 
 Run these commands to set up variables needed for image processing:
 
-NET=models/VehicleClassification
-DATASET=data/VehicleClassification
+NET=models/Fproject
+DATASET=data/Fproject
 Run this command try an image from the test folder. Change 'NAME HERE' to name your output file, rename 'NAME OF CATEGORY' to the category of what you want to test, rename 'IMAGE NAME' to the name of the image. You can rename the image first in the side menu to customize the name. imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/NAME OF CATEGORY/IMAGE NAME .jpg $DATASET/output/OUTPUT NAME.jpg
-Here is an example of what your command should look like: imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/VehicleClassification/Firetruck1.jpg Firetest1.jpg
+Here is an example of what your command should look like: imagenet.py --model=$NET/resnet18.onnx --input_blob=input_0 --output_blob=output_0 --labels=$DATASET/labels.txt $DATASET/test/Fproject/Firetruck1.jpg Firetest1.jpg
 
 The results should automatically go into the classification folder, and double click a picture to view the AI's classification and confidence.
 
